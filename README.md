@@ -8,9 +8,6 @@ A simple Task Management System built with Django and Graphene.
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
@@ -73,4 +70,3 @@ This project is a Task Management System developed using Django and Graphene, pr
     bash
     http://localhost:8000/graphql/
     ```
-    
