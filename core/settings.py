@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tasks',
-    "users",
+    'core.tasks',
+    "core.users",
     'graphene_django',
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     "graphql_auth",
@@ -150,12 +150,11 @@ AUTHENTICATION_BACKENDS = [
 
 GRAPHQL_JWT = {
     "JWT_ALLOW_ANY_CLASSES": [
-        #connect GraphQL Auth to GraphQL JWT for authentication
         "graphql_auth.mutations.Register",
         "graphql_auth.mutations.VerifyAccount",
-        "graphql_auth.mutations.ObtainJSONWebToken",# get jwt to log in
+        "graphql_auth.mutations.ObtainJSONWebToken",
     ],
-    "JWT_VERIFY_EXPIRATION": True, # affirm that the jwt token will expire
+    "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
 }
 
