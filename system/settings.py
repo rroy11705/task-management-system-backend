@@ -11,29 +11,44 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import django
-# from django.utils.translation import gettext, gettext_lazy
-# from django.dispatch import Signal
+from typing import Optional
+from django.core.exceptions import ImproperlyConfigured
+from django.core.validators import URLValidator
+from django.core.management.utils import get_random_secret_key
+import warnings
+from urllib.parse import urlparse
+from config import settings
 
-# model_delete_signal = Signal()
-# django.utils.translation.ugettext = gettext
-# django.utils.translation.ugettext_lazy = gettext_lazy
+def get_list(text):
+    return [item.strip() for item in text.split(",")]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0etej#xs#axg=%4v1m#y6v#200j$sf-&pq5ea$s#@c6pb78=q9'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = settings.debug
 
-ALLOWED_HOSTS = []
 
+SECRET_KEY = settings.secret_key
+
+if not SECRET_KEY and DEBUG:
+    warnings.warn("SECRET_KEY not configured, using a random temporary key.")
+    SECRET_KEY = get_random_secret_key()
+    
+SITE_ID = 1
+
+_DEFAULT_CLIENT_HOSTS = "localhost,127.0.0.1"
+
+ALLOWED_CLIENT_HOSTS = settings.allowed_client_hosts
+if not ALLOWED_CLIENT_HOSTS:
+    if DEBUG:
+        ALLOWED_CLIENT_HOSTS = _DEFAULT_CLIENT_HOSTS
+    else:
+        raise ImproperlyConfigured(
+            "ALLOWED_CLIENT_HOSTS environment variable must be set when DEBUG=False."
+        )
+
+ALLOWED_CLIENT_HOSTS = get_list(ALLOWED_CLIENT_HOSTS)
 
 # Application definition
 
@@ -85,6 +100,11 @@ WSGI_APPLICATION = 'system.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+# Maximum time in seconds Django can keep the database connections opened.
+# Set the value to 0 to disable connection persistence, database connections
+# will be closed after each request.
+DB_CONN_MAX_AGE = settings.db_conn_max_age
 
 DATABASES = {
     'default': {
@@ -158,4 +178,11 @@ GRAPHQL_JWT = {
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST: str = settings.email_host
+EMAIL_PORT: str = settings.email_port
+EMAIL_HOST_USER: str = settings.email_host_user
+EMAIL_HOST_PASSWORD: str = settings.email_host_password
+EMAIL_USE_TLS: bool = settings.email_use_ssl
+EMAIL_USE_SSL: bool = settings.email_use_tls
