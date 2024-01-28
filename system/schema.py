@@ -1,7 +1,7 @@
 import graphene
 
-import core.tasks.schema as tasks
-import core.users.schema as users
+import system.tasks.schema as tasks
+import system.users.schema as users
 
 class Query(tasks.schema.Query, users.schema.Query, graphene.ObjectType):
     # Inherits all classes and methods from app-specific queries, so no need

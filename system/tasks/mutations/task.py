@@ -1,6 +1,6 @@
 import graphene
-from core.tasks.models import Task, TaskStatus, TaskLabel
-from core.tasks.types import TaskType
+from system.tasks.models import Task, TaskStatus, TaskLabel
+from system.tasks.types import TaskType
 
 class TaskInput(graphene.InputObjectType):
     number = graphene.String(required=True)

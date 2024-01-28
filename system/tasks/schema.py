@@ -1,7 +1,7 @@
 import graphene
 from .models import Task, TaskStatus, TaskLabel
-from core.tasks import mutations
-from core.tasks.types import TaskType, TaskStatusType, TaskLabelType
+from system.tasks import mutations
+from system.tasks.types import TaskType, TaskStatusType, TaskLabelType
 
 class Query(graphene.ObjectType):
 

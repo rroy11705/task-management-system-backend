@@ -1,6 +1,6 @@
 import graphene
-from core.tasks.models import TaskLabel
-from core.tasks.types import TaskLabelType
+from system.tasks.models import TaskLabel
+from system.tasks.types import TaskLabelType
 
 
 class CreateTaskLabelMutation(graphene.Mutation):

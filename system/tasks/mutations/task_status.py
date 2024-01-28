@@ -1,6 +1,6 @@
 import graphene
-from core.tasks.models import TaskStatus
-from core.tasks.types import TaskStatusType
+from system.tasks.models import TaskStatus
+from system.tasks.types import TaskStatusType
 
 
 class CreateTaskStatusMutation(graphene.Mutation):
